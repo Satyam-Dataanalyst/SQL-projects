@@ -15,7 +15,7 @@ The database includes a table named `car_dekho` with fields like:
 - Filtering by custom time frames (e.g., 2015–2023)
 
 ## 🛠 Tools Used
-- MySQL (compatible with other dialects)
+- PostgreSQL (pgAdmin) (compatible with other dialects)
 - SQL queries for aggregation, filtering, and grouping
 
 ## 🚀 How to Use
@@ -26,4 +26,6 @@ The database includes a table named `car_dekho` with fields like:
 ## 💡 Sample Use Case
 > “Find the total number of petrol cars listed in 2020.”  
 ```sql
-SELECT COUNT(*) FROM car_dekho WHERE year = 2020 AND fuel = 'petrol';
+SELECT COUNT(*)
+FROM car_dekho
+WHERE year = 2020 AND fuel = 'petrol';
