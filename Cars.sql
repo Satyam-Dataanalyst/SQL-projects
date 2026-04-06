@@ -1,36 +1,76 @@
-create schema cars;
-use cars;
--- Read Data--
-select * from car_dekho;
--- Total Cars: To get a count of total records--
-select count(*) from car_dekho;
--- The manager asked the employee How many cars will be available in 2023?--
-select count(*) from car_dekho where year=2023;
--- The manager asked the employee How many cars is available in 2020, 2021, 2022 --
+-- Create Database and then create table.
+CREATE TABLE car_dekho (
+  name TEXT,
+  year INT8,
+  selling_price INT8,
+  km_driven INT8,
+  fuel VARCHAR(50),
+  seller_type VARCHAR(50),
+  transmission VARCHAR(50),
+  owner VARCHAR(50),
+  mileage VARCHAR(50),
+  engine VARCHAR(50),
+  max_power VARCHAR(50),
+  torque VARCHAR(50),
+  seats INT8
+);
 
--- Group by --
-select count(*) from car_dekho where year in (2020, 2021, 2022) group by year;
+-- Import csv files:
+COPY car_dekho (name, year, selling_price, km_driven, fuel, seller_type, transmission, owner, mileage, engine, max_power, torque, seats)
+FROM 'S:\Project Data analysis\SQL Project\Car_dekho.csv'
+DELIMITER ','
+CSV HEADER;
 
--- Client asked me to print the total of all cars by year. I don't see all the details.--
-select year, count(*) from car_dekho group by year;
+-- Check if dataset imported successfully?
+SELECT *
+FROM car_dekho;
 
--- Client asked to car dealer agent How many diesel cars will there be in 2020?--
-select count(*) from car_dekho where year = 2020 and fuel="diesel";
+-- Total Cars: To get a count of total records
+SELECT COUNT(*)
+FROM car_dekho;
 
--- Client requested a car dealer agent How many petrol cars will there be in 2020?--
-select count(*) from car_dekho where year = 2020 and fuel = 'petrol';
+-- How many cars will be available in 2023?
+SELECT COUNT(*)
+FROM car_dekho
+WHERE year = 2023;
 
--- The manager told the employee to give a print All the fuel cars (petrol, diesel, and CNG) come by all year.--
-select year, count(*) from car_dekho where fuel="petrol" group by year;
-select year, count(*) from car_dekho where fuel='diesel' group by year;
-select year, count(*) from car_dekho where fuel='CNG' group by year;
+-- How many cars is available in 2020, 2021, 2022?
+SELECT
+  year,
+  COUNT(*)
+FROM car_dekho
+WHERE year in (2020, 2021, 2022)
+GROUP BY year;
 
--- The manager said there were more than 100 cars in a given year, which year had more than 100 cars?--
-select year, count(*) from car_dekho group by year having count(*)>100;
+-- How many diesel cars will there be in 2020?
+SELECT COUNT(*)
+FROM car_dekho
+WHERE fuel = "Diesel" AND year = 2020;
 
--- The manager said to the employee All cars count details between 2015 and 2023; we need a complete lists.--
-select count(*) from car_dekho where year between 2015 and 2023;
+-- Print all the fuel cars (petrol, diesel, and CNG) come by all year.
+SELECT
+  year,
+  COUNT(*) FILTER (WHERE fuel = 'Petrol') AS petrol_count,
+  COUNT(*) FILTER (WHERE fuel = 'Diesel') AS diesel_count,
+  COUNT(*) FILTER (WHERE fuel = 'CNG') AS cng_count
+FROM car_dekho
+GROUP BY year
+ORDER BY year;
 
+--There were more than 100 cars in a given year, which year had more than 100 cars?
+SELECT
+  year,
+  COUNT(*) AS total_cars
+FROM car_dekho
+GROUP BY year
+HAVING COUNT(*) > 100
+ORDER BY COUNT(*) DESC;
 
--- The manager said to the employee All cars details between 2015 to 2023 we need complete list--
-select * from car_dekho where year between 2015 and 2023;
+-- All cars count details between 2015 and 2023.
+SELECT
+  year,
+  COUNT(*)
+FROM car_dekho
+WHERE year BETWEEN 2015 AND 2023
+GROUP BY year
+ORDER BY year ASC;
